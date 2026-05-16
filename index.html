@@ -992,40 +992,22 @@ table.heatmap td.empty { background: #f3f4f6 !important; color: #9ca3af; font-we
     <div class="funnel-panel" style="margin-top:14px; border-left:4px solid #E47B53;">
       <div class="funnel-panel-header">
         <h3>Funnel — Period Comparison: Q3'25 → Q4'25 → Q1'26</h3>
-        <div class="funnel-sub">9 aktivních paid zemí, celé období datasetu (nezávislé na filtru). Reg→Book konverze padá ve všech 9 zemích.</div>
+        <div class="funnel-sub" id="r-funnel-period-sub">—</div>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-top:8px;">
-        <!-- Header row -->
-        <div style="grid-column:1/-1; display:grid; grid-template-columns:repeat(6,1fr); gap:10px; font-size:10.5px; text-transform:uppercase; letter-spacing:0.5px; opacity:0.65; padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.08);">
-          <div>Stage</div><div style="text-align:right">Q3'25</div><div style="text-align:right">Q4'25</div><div style="text-align:right">Q1'26</div><div style="text-align:right">Δ % Q3→Q1</div><div>Verdict</div>
-        </div>
-        <!-- Sessions row -->
-        <div style="font-weight:600">Sessions</div><div style="text-align:right">990&nbsp;753</div><div style="text-align:right">999&nbsp;842</div><div style="text-align:right">1&nbsp;025&nbsp;836</div><div style="text-align:right; color:#7BB069">+3,5 %</div><div style="font-size:11px; opacity:0.75">🟢 stabilní</div>
-        <!-- New Users -->
-        <div style="font-weight:600">New Users</div><div style="text-align:right">487&nbsp;285</div><div style="text-align:right">471&nbsp;048</div><div style="text-align:right">472&nbsp;126</div><div style="text-align:right; color:#E07A6F">−3,1 %</div><div style="font-size:11px; opacity:0.75">🟡 mírný pokles</div>
-        <!-- Registrations -->
-        <div style="font-weight:600">Registrations</div><div style="text-align:right">49&nbsp;146</div><div style="text-align:right">48&nbsp;000</div><div style="text-align:right">61&nbsp;273</div><div style="text-align:right; color:#7BB069; font-weight:700">+24,7 %</div><div style="font-size:11px; opacity:0.75">🟢 top funnel sílí</div>
-        <!-- First Bookings -->
-        <div style="font-weight:600">First Bookings</div><div style="text-align:right">8&nbsp;800</div><div style="text-align:right">8&nbsp;138</div><div style="text-align:right">9&nbsp;154</div><div style="text-align:right; color:#7BB069">+4,0 %</div><div style="font-size:11px; opacity:0.75">🔴 zaostává za regs</div>
-        <!-- First Purchases -->
-        <div style="font-weight:600">First Purchases</div><div style="text-align:right">9&nbsp;590</div><div style="text-align:right">9&nbsp;301</div><div style="text-align:right">10&nbsp;016</div><div style="text-align:right; color:#7BB069">+4,4 %</div><div style="font-size:11px; opacity:0.75">🟡 stejně jako FB</div>
-        <!-- Repeat Purchases -->
-        <div style="font-weight:600">Repeat Purchases</div><div style="text-align:right">62&nbsp;993</div><div style="text-align:right">66&nbsp;605</div><div style="text-align:right">69&nbsp;380</div><div style="text-align:right; color:#7BB069; font-weight:700">+10,1 %</div><div style="font-size:11px; opacity:0.75">🏆 retention silní</div>
+      <div id="r-funnel-period-table" style="display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-top:8px;">
+        <!-- populated by renderFunnelPeriod() -->
       </div>
       <!-- Conversion rates summary -->
-      <div style="margin-top:14px; padding:10px 12px; background:rgba(228,123,83,0.08); border-radius:6px; border:1px solid rgba(228,123,83,0.25); font-size:12px;">
-        <strong style="color:#E47B53;">⚠️ Klíčový signál:</strong> Reg → Book konverze padá globálně z <strong>17,91 %</strong> (Q3) → <strong>16,95 %</strong> (Q4) → <strong>14,94 %</strong> (Q1) = <strong style="color:#E07A6F">−3,0 pp Q3→Q1.</strong>
-        Top funnel sílí (+24,7 % regs), bottom funnel zaostává (+4,4 % FP) → strukturální leak v booking layer (supply / UX / pricing). Žádná z 9 zemí se nezlepšila.
-      </div>
+      <div id="r-funnel-period-callout" style="margin-top:14px; padding:10px 12px; background:rgba(228,123,83,0.08); border-radius:6px; border:1px solid rgba(228,123,83,0.25); font-size:12px;">—</div>
     </div>
 
     <div class="chart-row cols-2-eq" style="margin-top:12px">
       <div class="chart-card">
-        <div class="chart-header"><div><div class="chart-title">Funnel per kvartál (Q3 / Q4 / Q1)</div><div class="chart-subtitle">Globální agregát napříč 9 aktivními paid zeměmi (log scale kvůli rozsahu Sessions vs FP)</div></div></div>
+        <div class="chart-header"><div><div class="chart-title">Funnel per kvartál (Q3 / Q4 / Q1)</div><div class="chart-subtitle" id="r-funnel-period-chart-sub">— (log scale kvůli rozsahu Sessions vs FP)</div></div></div>
         <div class="chart-canvas-wrap tall"><canvas id="r-chart-funnel-period"></canvas></div>
       </div>
       <div class="chart-card">
-        <div class="chart-header"><div><div class="chart-title">Reg → Book konverze per země — Q3'25 vs Q1'26</div><div class="chart-subtitle">Všech 9 zemí kleslo. Největší pokles: COM −8,8 pp, HU −8,4 pp, GR −7,7 pp.</div></div></div>
+        <div class="chart-header"><div><div class="chart-title">Reg → Book konverze per země — Q3'25 vs Q1'26</div><div class="chart-subtitle" id="r-regbook-period-chart-sub">—</div></div></div>
         <div class="chart-canvas-wrap tall"><canvas id="r-chart-regbook-period"></canvas></div>
       </div>
     </div>
@@ -2356,6 +2338,223 @@ function renderManagement() {
 }
 
 // ============================================================
+// FUNNEL PERIOD COMPARISON (Q3'25 → Q4'25 → Q1'26)
+// Country-filter-aware; ignores date filter (always full Q3/Q4/Q1 windows)
+// ============================================================
+function renderFunnelPeriod() {
+  const Q_RANGES = [
+    { key: "Q3", label: "Q3'25", start: "2025-07-01", end: "2025-09-30" },
+    { key: "Q4", label: "Q4'25", start: "2025-10-01", end: "2025-12-31" },
+    { key: "Q1", label: "Q1'26", start: "2026-01-01", end: "2026-03-31" },
+  ];
+  const STAGES = [
+    { key: "sessions",  label: "Sessions"        },
+    { key: "new_users", label: "New Users"       },
+    { key: "regs",      label: "Registrations"   },
+    { key: "fb",        label: "First Bookings"  },
+    { key: "fp",        label: "First Purchases" },
+    { key: "rp",        label: "Repeat Purchases"},
+  ];
+
+  // Aggregate per quarter (filtered by state.countries)
+  const agg = {};
+  Q_RANGES.forEach(q => {
+    const rows = DATA.funnel.filter(r => r.date >= q.start && r.date <= q.end && countryMatch(r.country));
+    const a = { sessions:0, new_users:0, regs:0, fb:0, fp:0, rp:0, purchases:0 };
+    rows.forEach(r => {
+      a.sessions  += (r.sessions || 0);
+      a.new_users += (r.new_users || 0);
+      a.regs      += (r.registrations || 0);
+      a.fb        += (r.first_bookings || 0);
+      a.fp        += (r.crm_first_purchases || 0);
+      a.purchases += (r.crm_purchases || 0);
+    });
+    a.rp = a.purchases - a.fp;
+    agg[q.key] = a;
+  });
+
+  // Compute Reg→Book conv per quarter
+  const rbConv = q => agg[q].regs > 0 ? agg[q].fb / agg[q].regs * 100 : null;
+  const rbQ3 = rbConv("Q3"), rbQ4 = rbConv("Q4"), rbQ1 = rbConv("Q1");
+  const rbDelta = (rbQ1 !== null && rbQ3 !== null) ? rbQ1 - rbQ3 : null;
+
+  // Verdict logic per stage (based on Δ% Q3→Q1)
+  function verdict(stage, deltaPct) {
+    if (deltaPct === null) return { icon: "•", text: "—", color: "#9aa" };
+    if (stage === "sessions")  return deltaPct > 2 ? { icon: "🟢", text: "stabilní / roste", color:"#7BB069" }
+                                  : deltaPct < -2 ? { icon: "🔴", text: "klesá", color:"#E07A6F" }
+                                  : { icon: "🟢", text: "stabilní", color:"#7BB069" };
+    if (stage === "new_users") return deltaPct > 2 ? { icon: "🟢", text: "noví roste", color:"#7BB069" }
+                                  : deltaPct < -2 ? { icon: "🟡", text: "mírný pokles", color:"#E5B95A" }
+                                  : { icon: "🟢", text: "stabilní", color:"#7BB069" };
+    if (stage === "regs")      return deltaPct > 10 ? { icon: "🟢", text: "top funnel sílí", color:"#7BB069" }
+                                  : deltaPct < -5 ? { icon: "🔴", text: "regs padají", color:"#E07A6F" }
+                                  : { icon: "🟡", text: "regs flat", color:"#E5B95A" };
+    if (stage === "fb")        return (rbDelta !== null && rbDelta < -1) ? { icon: "🔴", text: "zaostává za regs", color:"#E07A6F" }
+                                  : deltaPct > 5 ? { icon: "🟢", text: "bookings rostou", color:"#7BB069" }
+                                  : { icon: "🟡", text: "FB flat", color:"#E5B95A" };
+    if (stage === "fp")        return deltaPct > 5 ? { icon: "🟢", text: "FP rostou", color:"#7BB069" }
+                                  : deltaPct < -2 ? { icon: "🔴", text: "FP klesá", color:"#E07A6F" }
+                                  : { icon: "🟡", text: "stejně jako FB", color:"#E5B95A" };
+    if (stage === "rp")        return deltaPct > 5 ? { icon: "🏆", text: "retention silní", color:"#7BB069" }
+                                  : deltaPct < -2 ? { icon: "🔴", text: "retention klesá", color:"#E07A6F" }
+                                  : { icon: "🟢", text: "retention stabilní", color:"#7BB069" };
+    return { icon: "•", text: "—", color: "#9aa" };
+  }
+
+  // Build the table (header + rows)
+  const fmtN = v => (typeof fmtNum === "function" ? fmtNum(v) : v.toLocaleString("cs-CZ"));
+  const fmtPct = d => d === null ? "—" : (d > 0 ? "+" : "−") + Math.abs(d).toFixed(1) + " %";
+  const colorFor = d => d === null ? "#9aa" : d > 0 ? "#7BB069" : "#E07A6F";
+
+  let html = '<div style="grid-column:1/-1; display:grid; grid-template-columns:repeat(6,1fr); gap:10px; font-size:10.5px; text-transform:uppercase; letter-spacing:0.5px; opacity:0.65; padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.08);">';
+  html += '<div>Stage</div><div style="text-align:right">Q3\'25</div><div style="text-align:right">Q4\'25</div><div style="text-align:right">Q1\'26</div><div style="text-align:right">Δ % Q3→Q1</div><div>Verdict</div></div>';
+
+  STAGES.forEach(s => {
+    const q3v = agg.Q3[s.key], q4v = agg.Q4[s.key], q1v = agg.Q1[s.key];
+    const d = q3v > 0 ? (q1v - q3v) / q3v * 100 : null;
+    const v = verdict(s.key, d);
+    const bold = (s.key === "regs" || s.key === "rp") ? "font-weight:700;" : "";
+    html += `<div style="font-weight:600">${s.label}</div>`;
+    html += `<div style="text-align:right">${fmtN(q3v)}</div>`;
+    html += `<div style="text-align:right">${fmtN(q4v)}</div>`;
+    html += `<div style="text-align:right">${fmtN(q1v)}</div>`;
+    html += `<div style="text-align:right; color:${colorFor(d)}; ${bold}">${fmtPct(d)}</div>`;
+    html += `<div style="font-size:11px; opacity:0.85; color:${v.color}">${v.icon} ${v.text}</div>`;
+  });
+  document.getElementById("r-funnel-period-table").innerHTML = html;
+
+  // Sub-text (active countries count)
+  const sel = [...state.countries];
+  const subEl = document.getElementById("r-funnel-period-sub");
+  if (subEl) {
+    const allCountries = META.countries.length;
+    const countLabel = sel.length === allCountries ? `všech ${sel.length} zemí` : `${sel.length} ${sel.length === 1 ? "země" : (sel.length < 5 ? "země" : "zemí")}: ${sel.join(", ")}`;
+    const rbDir = (rbDelta !== null && rbDelta < 0) ? "padá" : (rbDelta !== null && rbDelta > 0 ? "roste" : "drží se");
+    subEl.textContent = `${countLabel}, celé období datasetu (reaguje na country filtr). Reg→Book konverze ${rbDir} v souhrnu.`;
+  }
+
+  // Callout
+  const calloutEl = document.getElementById("r-funnel-period-callout");
+  if (calloutEl) {
+    const regs_d = agg.Q3.regs > 0 ? (agg.Q1.regs - agg.Q3.regs) / agg.Q3.regs * 100 : null;
+    const fp_d   = agg.Q3.fp   > 0 ? (agg.Q1.fp   - agg.Q3.fp  ) / agg.Q3.fp   * 100 : null;
+    const rbColor = (rbDelta !== null && rbDelta < 0) ? "#E07A6F" : "#7BB069";
+    const fmtPP = v => v === null ? "—" : (v > 0 ? "+" : "−") + Math.abs(v).toFixed(1) + " pp";
+    const fmtP  = v => v === null ? "—" : v.toFixed(2) + " %";
+    const fmtPctSigned = v => v === null ? "—" : (v > 0 ? "+" : "−") + Math.abs(v).toFixed(1) + " %";
+    // Per-country reg→book: how many improved Q3→Q1
+    const perCountry = sel.map(c => {
+      const rQ3 = DATA.funnel.filter(r => r.country === c && r.date >= "2025-07-01" && r.date <= "2025-09-30");
+      const rQ1 = DATA.funnel.filter(r => r.country === c && r.date >= "2026-01-01" && r.date <= "2026-03-31");
+      const regs3 = rQ3.reduce((s,r)=>s+(r.registrations||0),0), fb3 = rQ3.reduce((s,r)=>s+(r.first_bookings||0),0);
+      const regs1 = rQ1.reduce((s,r)=>s+(r.registrations||0),0), fb1 = rQ1.reduce((s,r)=>s+(r.first_bookings||0),0);
+      const conv3 = regs3 > 0 ? fb3/regs3*100 : null;
+      const conv1 = regs1 > 0 ? fb1/regs1*100 : null;
+      return { c, conv3, conv1, delta: (conv3 !== null && conv1 !== null) ? conv1 - conv3 : null };
+    }).filter(x => x.delta !== null);
+    const improved = perCountry.filter(x => x.delta > 0).length;
+    const declined = perCountry.filter(x => x.delta < 0).length;
+
+    let calloutHTML = `<strong style="color:#E47B53;">⚠️ Klíčový signál:</strong> Reg → Book konverze ve výběru: <strong>${fmtP(rbQ3)}</strong> (Q3) → <strong>${fmtP(rbQ4)}</strong> (Q4) → <strong>${fmtP(rbQ1)}</strong> (Q1) = <strong style="color:${rbColor}">${fmtPP(rbDelta)} Q3→Q1.</strong> `;
+    calloutHTML += `Top funnel (${fmtPctSigned(regs_d)} regs) vs. bottom funnel (${fmtPctSigned(fp_d)} FP) `;
+    if (perCountry.length > 1) {
+      calloutHTML += ` → z ${perCountry.length} zemí ve výběru se ${improved === 0 ? "<strong>žádná nezlepšila</strong>" : `zlepšilo <strong>${improved}</strong>`}, zhoršilo <strong>${declined}</strong>.`;
+    }
+    calloutEl.innerHTML = calloutHTML;
+  }
+
+  // === Charts ===
+  const STAGE_LABELS = STAGES.map(s => s.label);
+  const Q3a = STAGES.map(s => agg.Q3[s.key]);
+  const Q4a = STAGES.map(s => agg.Q4[s.key]);
+  const Q1a = STAGES.map(s => agg.Q1[s.key]);
+
+  setupChart("r-chart-funnel-period", {
+    type: "bar",
+    data: {
+      labels: STAGE_LABELS,
+      datasets: [
+        { label: "Q3'25 (Jul–Sep)", data: Q3a, backgroundColor: "#3F7680", borderRadius: 4 },
+        { label: "Q4'25 (Oct–Dec)", data: Q4a, backgroundColor: "#E47B53", borderRadius: 4 },
+        { label: "Q1'26 (Jan–Mar)", data: Q1a, backgroundColor: "#0B4752", borderRadius: 4 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { position: "top", labels: { usePointStyle: true, font: { size: 11 } } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ": " + fmtN(ctx.parsed.y) } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: { type: "logarithmic", ticks: { callback: v => fmtN(v) }, title: { display: true, text: "Count (log scale)" } }
+      }
+    }
+  });
+  const chartSub = document.getElementById("r-funnel-period-chart-sub");
+  if (chartSub) {
+    chartSub.textContent = sel.length === META.countries.length
+      ? `Globální agregát napříč ${sel.length} zeměmi (log scale kvůli rozsahu Sessions vs FP)`
+      : `Agregát: ${sel.join(", ")} (log scale)`;
+  }
+
+  // Per-country Reg→Book Q3 vs Q1, sorted by Q1 desc
+  const rbRows = perCountryRegBook(sel);
+  setupChart("r-chart-regbook-period", {
+    type: "bar",
+    data: {
+      labels: rbRows.map(r => r.c),
+      datasets: [
+        { label: "Q3'25", data: rbRows.map(r => r.conv3), backgroundColor: "#3F7680", borderRadius: 4 },
+        { label: "Q1'26", data: rbRows.map(r => r.conv1), backgroundColor: "#E47B53", borderRadius: 4 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { position: "top", labels: { usePointStyle: true, font: { size: 11 } } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ": " + (ctx.parsed.y === null ? "—" : ctx.parsed.y.toFixed(1) + " %") } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, ticks: { callback: v => v + " %" }, title: { display: true, text: "Reg → Book conv %" } }
+      }
+    }
+  });
+  const regbookSub = document.getElementById("r-regbook-period-chart-sub");
+  if (regbookSub) {
+    // Sort declines by magnitude
+    const declines = rbRows
+      .filter(r => r.delta !== null && r.delta < 0)
+      .sort((a,b) => a.delta - b.delta)
+      .slice(0, 3);
+    if (declines.length > 0) {
+      const top = declines.map(d => `${d.c} ${d.delta.toFixed(1)} pp`).join(", ");
+      regbookSub.textContent = `Z ${rbRows.length} zemí ${rbRows.filter(r => r.delta < 0).length} kleslo. Největší pokles: ${top}.`;
+    } else {
+      regbookSub.textContent = `Z ${rbRows.length} zemí — žádný negativní pokles Q3→Q1.`;
+    }
+  }
+}
+
+function perCountryRegBook(countries) {
+  const rows = countries.map(c => {
+    const rQ3 = DATA.funnel.filter(r => r.country === c && r.date >= "2025-07-01" && r.date <= "2025-09-30");
+    const rQ1 = DATA.funnel.filter(r => r.country === c && r.date >= "2026-01-01" && r.date <= "2026-03-31");
+    const regs3 = rQ3.reduce((s,r)=>s+(r.registrations||0),0), fb3 = rQ3.reduce((s,r)=>s+(r.first_bookings||0),0);
+    const regs1 = rQ1.reduce((s,r)=>s+(r.registrations||0),0), fb1 = rQ1.reduce((s,r)=>s+(r.first_bookings||0),0);
+    const conv3 = regs3 > 0 ? fb3/regs3*100 : null;
+    const conv1 = regs1 > 0 ? fb1/regs1*100 : null;
+    return { c, conv3, conv1, delta: (conv3 !== null && conv1 !== null) ? conv1 - conv3 : null };
+  }).filter(r => r.conv1 !== null || r.conv3 !== null);
+  rows.sort((a,b) => (b.conv1 || 0) - (a.conv1 || 0));
+  return rows;
+}
+
+// ============================================================
 // RETENTION & ACQUISITION TAB
 // ============================================================
 function renderRetention() {
@@ -2627,6 +2826,9 @@ function renderRetention() {
 
   // === Action insights ===
   renderRetentionSummary(periods, matrixData);
+
+  // === Funnel period comparison (country-filter aware) ===
+  renderFunnelPeriod();
 }
 
 // Helper: country table for retention/acquisition
@@ -4348,77 +4550,8 @@ function init() {
 
 init();
 
-// ============================================================
-// PERIOD COMPARISON CHARTS (Q3'25 → Q4'25 → Q1'26)
-// Static — 9 active paid countries, full dataset
-// ============================================================
-(function initPeriodComparisonCharts() {
-  const STAGE_LABELS = ["Sessions", "New Users", "Registrations", "First Bookings", "First Purchases", "Repeat Purchases"];
-  const Q3 = [990753, 487285, 49146, 8800, 9590, 62993];
-  const Q4 = [999842, 471048, 48000, 8138, 9301, 66605];
-  const Q1 = [1025836, 472126, 61273, 9154, 10016, 69380];
-
-  // Color palette — Q3 mid-teal, Q4 coral, Q1 deep teal
-  const COLOR_Q3 = "#3F7680";
-  const COLOR_Q4 = "#E47B53";
-  const COLOR_Q1 = "#0B4752";
-
-  setupChart("r-chart-funnel-period", {
-    type: "bar",
-    data: {
-      labels: STAGE_LABELS,
-      datasets: [
-        { label: "Q3'25 (Jul–Sep)", data: Q3, backgroundColor: COLOR_Q3, borderRadius: 4 },
-        { label: "Q4'25 (Oct–Dec)", data: Q4, backgroundColor: COLOR_Q4, borderRadius: 4 },
-        { label: "Q1'26 (Jan–Mar)", data: Q1, backgroundColor: COLOR_Q1, borderRadius: 4 },
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      plugins: {
-        legend: { position: "top", labels: { usePointStyle: true, font: { size: 11 } } },
-        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ": " + (typeof fmtNum === "function" ? fmtNum(ctx.parsed.y) : ctx.parsed.y.toLocaleString("cs-CZ")) } }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-        y: {
-          type: "logarithmic",
-          ticks: { callback: v => (typeof fmtNum === "function" ? fmtNum(v) : v.toLocaleString("cs-CZ")) },
-          title: { display: true, text: "Count (log scale)" }
-        }
-      }
-    }
-  });
-
-  // Per-country Reg→Book Q3 vs Q1 (sorted by Q1 desc)
-  const COUNTRY_LABELS = ["SI", "UA", "COM", "GR", "LT", "CZ", "SK", "HU", "PL"];
-  const RB_Q3 = [21.6, 19.6, 24.4, 22.6, 15.4, 14.1, 12.1, 18.0, 7.5];
-  const RB_Q1 = [18.1, 16.4, 15.6, 14.9, 13.5, 12.8, 10.4, 9.6, 6.3];
-
-  setupChart("r-chart-regbook-period", {
-    type: "bar",
-    data: {
-      labels: COUNTRY_LABELS,
-      datasets: [
-        { label: "Q3'25", data: RB_Q3, backgroundColor: COLOR_Q3, borderRadius: 4 },
-        { label: "Q1'26", data: RB_Q1, backgroundColor: COLOR_Q4, borderRadius: 4 },
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      plugins: {
-        legend: { position: "top", labels: { usePointStyle: true, font: { size: 11 } } },
-        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ": " + ctx.parsed.y.toFixed(1) + " %" } }
-      },
-      scales: {
-        x: { grid: { display: false } },
-        y: { beginAtZero: true, ticks: { callback: v => v + " %" }, title: { display: true, text: "Reg → Book conv %" } }
-      }
-    }
-  });
-})();
+// Period comparison charts/table now rendered by renderFunnelPeriod() (called from renderRetention).
+// This makes the Q3/Q4/Q1 funnel block reactive to the country filter.
 </script>
 </body>
 </html>
